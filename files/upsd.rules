@@ -1,0 +1,6 @@
+*filter
+
+# tcp port 3493
+-A INPUT -p tcp --dport 3493 -j ACCEPT -m comment --comment "upsd"
+
+COMMIT

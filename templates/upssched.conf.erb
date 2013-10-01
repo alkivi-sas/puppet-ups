@@ -1,0 +1,52 @@
+# the script to be executed
+CMDSCRIPT /etc/nut/alert.sh
+
+#
+#ONLINE
+#The UPS is back on line.
+#
+#ONBATT
+#The UPS is on battery.
+#
+#LOWBATT
+#The UPS battery is low (as determined by the driver).
+#
+#FSD
+#The UPS has been commanded into the "forced shutdown" mode.
+#
+#COMMOK
+#Communication with the UPS has been established.
+#
+#COMMBAD
+#Communication with the UPS was just lost.
+#
+#SHUTDOWN
+#The local system is being shut down.
+#
+#REPLBATT
+#The UPS needs to have its battery replaced.
+#
+#NOCOMM
+#The UPS can’t be contacted for monitoring.
+#
+
+# mandatory fields that must be set before AT commands
+PIPEFN /var/lib/nut/upssched/upssched.pipe
+LOCKFN /var/lib/nut/upssched/upssched.lock
+
+# the timers, here 30 sec after the ONBATT (ups on battery) event
+AT ONBATT * START-TIMER onbatt 30
+AT ONLINE * CANCEL-TIMER onbatt
+AT ONLINE * START-TIMER ok 30
+
+# Directly send email
+AT LOWBATT * EXECUTE lowbatt
+AT FSD * EXECUTE fsd
+AT SHUTDOWN * EXECUTE shutdown
+AT REPLBATT * EXECUTE replbatt
+
+# Comm issue
+AT NOCOMM * START-TIMER commbad 30
+AT COMMBAD * START-TIMER commbad 30
+AT COMMOK * CANCEL-TIMER commbad 
+AT COMMOK * START-TIMER ok 30
