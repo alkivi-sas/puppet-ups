@@ -22,16 +22,28 @@ class ups (
     motd::register{"UPS ${manufacturer} support": }
   }
 
-  # Generate password for different user, will be stored on puppet master only !
-  # TODO : this sucks, change that !
-  $admin_user = 'admin'
-  $admin_password = generate('/usr/bin/sudo', '/root/alkivi-scripts/genpwd', '--save', $admin_user, '--savedir', '/root/.passwd/ups', '--print')
-
-  $upsmon_user = 'upsmon'
-  $upsmon_password = generate('/usr/bin/sudo', '/root/alkivi-scripts/genpwd', '--save', $upsmon_user, '--savedir', '/root/.passwd/ups', '--print')
-
+  $admin_user   = 'admin'
+  $upsmon_user  = 'upsmon'
   $network_user = 'upsmon_network'
-  $network_password = generate('/usr/bin/sudo', '/root/alkivi-scripts/genpwd', '--save', $network_user, '--savedir', '/root/.passwd/ups', '--print')
+
+  $admin_password   = alkivi_password($admin_user, 'ups')
+  $upsmon_password  = alkivi_password($upsmon_user, 'ups')
+  $network_password = alkivi_password($network_user, 'ups')
+
+  alkivi_base::passwd{ 'ups_admin_user':
+    file => $admin_user,
+    type => 'ups'
+  }
+
+  alkivi_base::passwd{ 'ups_upsmon_user':
+    file => $upsmon_user,
+    type => 'ups'
+  }
+
+  alkivi_base::passwd{ 'ups_network_user':
+    file => $network_user,
+    type => 'ups'
+  }
 
 
   # declare all parameterized classes
