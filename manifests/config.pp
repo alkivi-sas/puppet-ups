@@ -1,4 +1,15 @@
-class ups::config () {
+class ups::config (
+  $ups_name         = $ups::ups_name,
+  $driver           = $ups::driver,
+  $port             = $ups::port,
+  $mode             = $ups::mode,
+  $admin_user       = $ups::admin_user,
+  $admin_password   = $ups::admin_password,
+  $upsmon_user      = $ups::upsmon_user,
+  $upsmon_password  = $ups::upsmon_password,
+  $network_user     = $ups::network_user,
+  $network_password = $ups::network_password,
+) {
   File {
     ensure => present,
     owner  => 'root',
