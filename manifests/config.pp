@@ -7,6 +7,7 @@ class ups::config (
   $admin_password   = $ups::admin_password,
   $upsmon_user      = $ups::upsmon_user,
   $upsmon_password  = $ups::upsmon_password,
+  $upsmon_mode      = $ups::upsmon_mode,
   $network_user     = $ups::network_user,
   $network_password = $ups::network_password,
 ) {
